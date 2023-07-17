@@ -78,5 +78,10 @@ function uptade(){
     }
 }
 
-
+function  limparBoard(){
+    ctx.fillStyle = "#ccc";
+    ctx.StrokeStyle = "#000";
+    ctx.fillRect(0,0,fild.clientWidth,fild.height);
+    ctx.strokeRect(0,0,fild.clientWidth,fild.height);
+};
 
