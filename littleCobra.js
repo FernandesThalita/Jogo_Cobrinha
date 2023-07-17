@@ -55,7 +55,27 @@ window.addEventListener("load",()=>{
 });
 
 function uptade(){
-    if()
+    if(comecar){
+        if(fim_de_jogo()){
+            pause.style.display = "none";
+            fim_de_jogo.style.display = "block";
+            counterTempo.style.display = "block";
+
+            setInterval(()=>{
+                counterTempo.innerHTML -=1;
+                if(counterTempo.innerHTML== "0") location.reload();
+            },1000);
+            return;
+        };
+        setTimeout(()=>{
+            mudarDirecao = false;
+            limparBoard();
+            drawsFruta();
+            moveCobrinha();
+            drawsCobrinha();
+            uptade();
+        }, velocidade);
+    }
 }
 
 
