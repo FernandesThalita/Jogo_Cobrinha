@@ -7,6 +7,7 @@ const inicar_jogo = document.querySelector(".inicar_jogo");
 const pause = document.querySelector('.pause');
 const fim_de_jogo = document.querySelector(".fim_de_jogo");
 const counterTempo = document.querySelector(".counter");
+const botoes = document.querySelectorAll("button");
 
 // ---------------------------------------------
 
@@ -33,6 +34,8 @@ let mudarDirecao = false;
 //-------------------------
 
 window.addEventListener("load", () => {
+    const audioTheme = document.getElementById("audioTheme");
+    audioTheme.play();
     drawsFruta();
     drawsCobrinha();
     gerarFruta();
@@ -57,6 +60,8 @@ window.addEventListener("load", () => {
 function uptade() {
     if (comecar) {
         if (fim_de_jogo_funcao()) {
+            const efeitoGameOver = document.getElementById("efeitoGameOver");
+            efeitoGameOver.play();
             pause.style.display = "none";
             fim_de_jogo.style.display = "block";
             counterTempo.style.display = "block";
@@ -85,14 +90,14 @@ function limparBoard() {
     ctx.strokeRect(0, 0, fild.width, fild.height);
 };
 
-function drawsCobrinha(){
-    cobrinha.forEach((element)=>{
-         drawsParteCobrinha(element);
+function drawsCobrinha() {
+    cobrinha.forEach((element) => {
+        drawsParteCobrinha(element);
     });
 };
 
 function drawsParteCobrinha(cobrinhaParte) {
-    ctx.fillStyle = "#000";
+    ctx.fillStyle = "#742BC9";
     ctx.strokeStyle = "#fff";
     ctx.fillRect(cobrinhaParte.x, cobrinhaParte.y, 10, 10);
     ctx.strokeRect(cobrinhaParte.x, cobrinhaParte.y, 10, 10);
@@ -102,7 +107,7 @@ function drawsFruta() {
     ctx.beginPath();
     ctx.arc(fruta_x, fruta_y, 6, 8, 16);
     ctx.stroke();
-    ctx.fillStyle = "#48e";
+    ctx.fillStyle = "#EB0A17";
     ctx.fill();
     ctx.closePath();
 };
@@ -128,39 +133,49 @@ function gerarFruta() {
 
 };
 
-function keyDownHandler(event){
+function keyDownHandler(event) {
     const left = 37, right = 39, up = 38, down = 40;
-    if(mudarDirecao) return;
+    if (mudarDirecao) return;
     mudarDirecao = true;
     let key = event.keyCode;
-    if(key === left && moveRight != true){
-         moveUp = false, moveDown = false, moveLeft = true, moveRight = false;
+    if (key === left && moveRight != true) {
+        moveUp = false, moveDown = false, moveLeft = true, moveRight = false;
     };
-    if(key === right && moveLeft != true){
+    if (key === right && moveLeft != true) {
         moveUp = false, moveDown = false, moveLeft = false, moveRight = true;
     }
-    if(key === up && moveDown != true){
+    if (key === up && moveDown != true) {
         moveUp = true, moveDown = false, moveLeft = false, moveRight = false;
     };
-    if(key === down && moveUp != true){
+    if (key === down && moveUp != true) {
         moveUp = false, moveDown = true, moveLeft = false, moveRight = false;
     };
 
-    if(moveLeft){dx = -1, dy = 0 };
-    if(moveRight){dx = 1, dy = 0 };
-    if(moveUp){dx = 0, dy = -1 };
-    if(moveDown){dx = 0, dy = 1 };
+    if (moveLeft) { dx = -1, dy = 0 };
+    if (moveRight) { dx = 1, dy = 0 };
+    if (moveUp) { dx = 0, dy = -1 };
+    if (moveDown) { dx = 0, dy = 1 };
 };
 
-function moveCobrinha(){
-    const cabeca = {x: cobrinha[0].x + (dx * 10),y: cobrinha[0].y + (dy*10)};
+function moveCobrinha() {
+    const cabeca = { x: cobrinha[0].x + (dx * 10), y: cobrinha[0].y + (dy * 10) };
     cobrinha.unshift(cabeca);
-    if((cobrinha[0].x +10) >= fruta_x&& (cobrinha[0].x -5)<= fruta_x && (cobrinha[0].y +10) >= fruta_y && (cobrinha[0].y -5)<= fruta_y ){
+    if ((cobrinha[0].x + 10) >= fruta_x && (cobrinha[0].x - 5) <= fruta_x && (cobrinha[0].y + 10) >= fruta_y && (cobrinha[0].y - 5) <= fruta_y) {
+        const efeitoSonoro = document.getElementById("efeitoSom");
+        efeitoSonoro.play();
         pontuacao += 1;
-        contador.innerHTML= pontuacao;
+        contador.innerHTML = pontuacao;
         velocidade -= 0.75;
         gerarFruta();
-    }else{
+    } else {
         cobrinha.pop()
     };
 };
+
+
+botoes.forEach((botao) => {
+    botao.addEventListener("click", () => {
+      const audioBotao = document.getElementById('audioBotao');
+      audioBotao.play();
+    });
+  });

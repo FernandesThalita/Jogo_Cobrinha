@@ -4,20 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/favicon" href="midia/icon/icons8-year-of-snake-32.png">
     <title>Little Cobra</title>
 </head>
 <body>
+    <audio id="audioTheme" loop>
+        <source src="midia/sound/ambient-song-thing-7107.mp3" type="audio/mp3">
+        Seu navegador não suporta a tag de áudio.
+      </audio>
+      
     <header>
         <p class="titulo">Little Cobra</p>
     </header>
 
     <section class="opcoes">
         <article class="opcoes_article">
+            <audio id="audioBotao" src="midia/sound/button-124476.mp3"></audio>
             <button class="inicar_jogo">Jogar</button>
             <button class="pause">
                 Pausar
             </button>
             <h2 class="fim_de_jogo">Fim de Jogo</h2>
+            <audio id="efeitoSom" src="midia/sound/eating-sound-effect-36186.mp3"></audio>
+            <audio id="efeitoGameOver" src="midia/sound/videogame-death-sound-43894.mp3"></audio>
             <h3 class="counter">5</h3>
         </article>
     </section>
