@@ -40,7 +40,7 @@ window.addEventListener("load", () => {
     inicar_jogo.addEventListener("click", () => {
         inicar_jogo.style.display = 'none';
         pause.style.display = "block";
-        pause.display.position = "absolute";
+        pause.style.position = "absolute";
         pause.style.top = "-3vh";
         pause.style.left = "36vw";
         comecar = true;
@@ -56,7 +56,7 @@ window.addEventListener("load", () => {
 
 function uptade() {
     if (comecar) {
-        if (fim_de_jogo()) {
+        if (fim_de_jogo_funcao()) {
             pause.style.display = "none";
             fim_de_jogo.style.display = "block";
             counterTempo.style.display = "block";
@@ -81,29 +81,35 @@ function uptade() {
 function limparBoard() {
     ctx.fillStyle = "#ccc";
     ctx.StrokeStyle = "#000";
-    ctx.fillRect(0, 0, fild.clientWidth, fild.height);
-    ctx.strokeRect(0, 0, fild.clientWidth, fild.height);
+    ctx.fillRect(0, 0, fild.width, fild.height);
+    ctx.strokeRect(0, 0, fild.width, fild.height);
 };
 
-function drawsCobrinha(cobrinhaParte) {
+function drawsCobrinha(){
+    cobrinha.forEach((element)=>{
+         drawsParteCobrinha(element);
+    });
+};
+
+function drawsParteCobrinha(cobrinhaParte) {
     ctx.fillStyle = "#000";
     ctx.strokeStyle = "#fff";
-    ctx.fillRect(cobrinhaParte.x, cobrinhaParte, y, 10, 10);
-    ctx.strokeRect(cobrinhaParte.x, cobrinhaParte, y, 10, 10);
+    ctx.fillRect(cobrinhaParte.x, cobrinhaParte.y, 10, 10);
+    ctx.strokeRect(cobrinhaParte.x, cobrinhaParte.y, 10, 10);
 };
 
 function drawsFruta() {
-    ctx.iniciarPath();
+    ctx.beginPath();
     ctx.arc(fruta_x, fruta_y, 6, 8, 16);
     ctx.stroke();
     ctx.fillStyle = "#48e";
     ctx.fill();
-    ctx.fecharPath();
-}
+    ctx.closePath();
+};
 
-function fim_de_jogo() {
+function fim_de_jogo_funcao() {
     for (let i = 1; i < cobrinha.length; i++) {
-        if (cobrinha[i].x === cobrinha[0].x && cobrinha[i].y === cobrinha[0].y) return;
+        if (cobrinha[i].x === cobrinha[0].x && cobrinha[i].y === cobrinha[0].y) return true;
     }
     const hitLeftWall = cobrinha[0].x < 0;
     const hitRightWall = cobrinha[0].x > fild.width - 10;
@@ -115,15 +121,16 @@ function fim_de_jogo() {
 
 function gerarFruta() {
     fruta_x = Math.floor((Math.random() * ((fild.width - 10) - 0) + 0) / 10) * 10;
-    fruta_x = Math.floor((Math.random() * ((fild.height - 10) - 0) + 0) / 10) * 10;
+    fruta_y = Math.floor((Math.random() * ((fild.height - 10) - 0) + 0) / 10) * 10;
     cobrinha.forEach((parte) => {
         if (parte.x == fruta_x && parte.y == fruta_y) { gerarFruta() };
     });
+
 };
 
 function keyDownHandler(event){
     const left = 37, right = 39, up = 38, down = 40;
-    if(mudarDirecao) return true;
+    if(mudarDirecao) return;
     mudarDirecao = true;
     let key = event.keyCode;
     if(key === left && moveRight != true){
@@ -134,7 +141,7 @@ function keyDownHandler(event){
     }
     if(key === up && moveDown != true){
         moveUp = true, moveDown = false, moveLeft = false, moveRight = false;
-    }
+    };
     if(key === down && moveUp != true){
         moveUp = false, moveDown = true, moveLeft = false, moveRight = false;
     };
@@ -142,11 +149,18 @@ function keyDownHandler(event){
     if(moveLeft){dx = -1, dy = 0 };
     if(moveRight){dx = 1, dy = 0 };
     if(moveUp){dx = 0, dy = -1 };
-    if(moveUp){dx = 0, dy = -1 };
+    if(moveDown){dx = 0, dy = 1 };
 };
 
 function moveCobrinha(){
     const cabeca = {x: cobrinha[0].x + (dx * 10),y: cobrinha[0].y + (dy*10)};
     cobrinha.unshift(cabeca);
-    if(cobrinha[0].x +10)>= fruta_x&& (cobrinha[0].x -5)<= )
-}
+    if((cobrinha[0].x +10) >= fruta_x&& (cobrinha[0].x -5)<= fruta_x && (cobrinha[0].y +10) >= fruta_y && (cobrinha[0].y -5)<= fruta_y ){
+        pontuacao += 1;
+        contador.innerHTML= pontuacao;
+        velocidade -= 0.75;
+        gerarFruta();
+    }else{
+        cobrinha.pop()
+    };
+};
